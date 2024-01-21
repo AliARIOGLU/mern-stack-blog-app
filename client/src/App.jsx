@@ -5,6 +5,7 @@ import { Home, About, Dashboard, SignIn, SignUp, Projects } from "./pages";
 
 // components
 import { Header } from "./components/Header";
+import { FooterSection } from "./components/Footer";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
       </Routes>
+      <FooterSection />
     </BrowserRouter>
   );
 }
