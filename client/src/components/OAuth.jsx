@@ -13,7 +13,6 @@ export const OAuth = () => {
 
   const handleGoogleClick = async () => {
     const provider = new GoogleAuthProvider();
-    // bir kere google ile girdikten sonra artık otomatik olarak bir daha hesap seçmemeni sağlıyor.
     provider.setCustomParameters({ prompt: "select_account" });
 
     try {
