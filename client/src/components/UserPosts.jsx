@@ -44,7 +44,12 @@ export const UserPosts = ({
         </Table.Head>
         <Table.Body>
           {posts.map((post) => (
-            <UserPost post={post} key={post._id} />
+            <UserPost
+              post={post}
+              key={post._id}
+              userId={userId}
+              setUserPosts={setUserPosts}
+            />
           ))}
         </Table.Body>
       </Table>
