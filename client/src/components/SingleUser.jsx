@@ -9,28 +9,25 @@ export const SingleUser = ({ user, setUsers }) => {
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState("");
 
-  //   const handleDeleteUser = async () => {
-  //     setShowModal(false);
+  const handleDeleteUser = async () => {
+    setShowModal(false);
 
-  //     try {
-  //       const res = await fetch(
-  //         `/api/post/deletepost/${postIdToDelete}/${userId}`,
-  //         {
-  //           method: "DELETE",
-  //         }
-  //       );
-  //       const data = await res.json();
-  //       if (!res.ok) {
-  //         console.log(data.message);
-  //       } else {
-  //         setUsers((prevUsers) =>
-  //           prevUsers.filter((user) => user._id !== userIdToDelete)
-  //         );
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+    try {
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setUsers((prevUsers) =>
+          prevUsers.filter((user) => user._id !== userIdToDelete)
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <>
@@ -78,7 +75,7 @@ export const SingleUser = ({ user, setUsers }) => {
               Are you sure you want to delete this user?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => {}}>
+              <Button color="failure" onClick={handleDeleteUser}>
                 Yes, I'm sure
               </Button>
               <Button color="gray" onClick={() => setShowModal(false)}>
