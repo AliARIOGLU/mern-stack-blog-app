@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Spinner, Button, Alert } from "flowbite-react";
 import { CallToAction } from "../components/CallToAction";
+import { CommentSection } from "../components/CommentSection";
 
 const FETCH_STATUS = {
   IDLE: "idle",
@@ -92,6 +93,7 @@ const PostPage = () => {
           <div className="max-w-4xl mx-auto w-full">
             <CallToAction />
           </div>
+          <CommentSection postId={post._id} />
         </>
       )}
     </main>
