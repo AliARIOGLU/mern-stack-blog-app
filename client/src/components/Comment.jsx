@@ -5,7 +5,13 @@ import { useEffect, useState } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import { Button, Textarea } from "flowbite-react";
 
-export const Comment = ({ comment, onLike, currentUser, handleEditSubmit }) => {
+export const Comment = ({
+  comment,
+  onLike,
+  currentUser,
+  handleEditSubmit,
+  onDelete,
+}) => {
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
@@ -125,13 +131,13 @@ export const Comment = ({ comment, onLike, currentUser, handleEditSubmit }) => {
                     >
                       Edit
                     </button>
-                    {/* <button
+                    <button
                       type="button"
                       onClick={() => onDelete(comment._id)}
                       className="text-gray-400 hover:text-red-500"
                     >
                       Delete
-                    </button> */}
+                    </button>
                   </>
                 )}
             </div>
