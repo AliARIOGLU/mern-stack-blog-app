@@ -1,15 +1,23 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // pages
-import { Home, About, Dashboard, SignIn, SignUp, Projects } from "./pages";
+import {
+  Home,
+  About,
+  Dashboard,
+  SignIn,
+  SignUp,
+  Projects,
+  CreatePost,
+  UpdatePost,
+  PostPage,
+} from "./pages";
 
 // components
 import { Header } from "./components/Header";
 import { FooterSection } from "./components/Footer";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AdminRoute } from "./components/AdminRoute";
-import CreatePost from "./pages/CreatePost";
-import UpdatePost from "./pages/UpdatePost";
 
 function App() {
   return (
@@ -28,6 +36,7 @@ function App() {
           <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Route>
         <Route path="/projects" element={<Projects />} />
+        <Route path="/post/:postSlug" element={<PostPage />} />
       </Routes>
       <FooterSection />
     </BrowserRouter>
