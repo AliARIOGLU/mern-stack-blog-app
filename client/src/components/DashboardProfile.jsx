@@ -231,9 +231,25 @@ export const DashboardProfile = () => {
           placeholder="*********"
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
+        <Button
+          type="submit"
+          gradientDuoTone="purpleToBlue"
+          outline
+          disabled={loading || imageFileUploading}
+        >
+          {loading ? "Updating..." : "Update"}
         </Button>
+        {currentUser?.isAdmin && (
+          <Link to="/create-post">
+            <Button
+              type="button"
+              className="w-full"
+              gradientDuoTone="purpleToPink"
+            >
+              Create a post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="flex justify-between text-red-500 mt-5">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
