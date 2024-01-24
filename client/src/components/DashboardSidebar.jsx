@@ -65,18 +65,16 @@ export const DashboardSidebar = () => {
                 <Sidebar.Item
                   active={tab === "dash" || !tab}
                   icon={HiChartPie}
-                  label={"Dashboard"}
                   labelColor="dark"
                   as="div"
                 >
-                  Posts
+                  Dashboard
                 </Sidebar.Item>
               </Link>
               <Link to="/dashboard?tab=posts">
                 <Sidebar.Item
                   active={tab === "posts"}
                   icon={HiDocumentText}
-                  label={"Posts"}
                   labelColor="dark"
                   as="div"
                 >
@@ -87,7 +85,6 @@ export const DashboardSidebar = () => {
                 <Sidebar.Item
                   active={tab === "users"}
                   icon={HiOutlineUserGroup}
-                  label={"Users"}
                   labelColor="dark"
                   as="div"
                 >
@@ -98,7 +95,6 @@ export const DashboardSidebar = () => {
                 <Sidebar.Item
                   active={tab === "comments"}
                   icon={HiAnnotation}
-                  label={"Comments"}
                   labelColor="dark"
                   as="div"
                 >
