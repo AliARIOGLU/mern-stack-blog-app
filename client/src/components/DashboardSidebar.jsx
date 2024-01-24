@@ -4,6 +4,7 @@ import {
   HiArrowSmRight,
   HiDocumentText,
   HiOutlineUserGroup,
+  HiAnnotation,
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
@@ -75,6 +76,17 @@ export const DashboardSidebar = () => {
                   active={tab === "users"}
                   icon={HiOutlineUserGroup}
                   label={"Users"}
+                  labelColor="dark"
+                  as="div"
+                >
+                  Users
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=comments">
+                <Sidebar.Item
+                  active={tab === "comments"}
+                  icon={HiAnnotation}
+                  label={"Comments"}
                   labelColor="dark"
                   as="div"
                 >
