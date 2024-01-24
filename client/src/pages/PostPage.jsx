@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Spinner, Button, Alert } from "flowbite-react";
 import { CallToAction } from "../components/CallToAction";
 import { CommentSection } from "../components/CommentSection";
+import { RecentArticles } from "../components/RecentArticles";
 
 const FETCH_STATUS = {
   IDLE: "idle",
@@ -94,6 +95,11 @@ const PostPage = () => {
             <CallToAction />
           </div>
           <CommentSection postId={post._id} />
+
+          <div className="flex flex-col items-center justify-center mb-5">
+            <h1 className="text-xl mt-5">Recent articles</h1>
+            <RecentArticles />
+          </div>
         </>
       )}
     </main>
