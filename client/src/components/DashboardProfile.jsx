@@ -21,7 +21,7 @@ import {
   deleteUserFailure,
   signoutSuccess,
 } from "../redux/user/userSlice";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { HiOutlineExclamationCircle, HiCamera } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 export const DashboardProfile = () => {
@@ -174,9 +174,10 @@ export const DashboardProfile = () => {
           hidden
         />
         <div
-          className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full"
+          className="relative w-32 h-32 self-center cursor-pointer shadow-md rounded-full"
           onClick={() => filePickerRef.current.click()}
         >
+          <HiCamera className="absolute top-0 right-2 w-10 h-10 text-sky-900 dark:text-blue-500" />
           {imageFileUploadProgress && (
             <CircularProgressbar
               value={imageFileUploadProgress || 0}
