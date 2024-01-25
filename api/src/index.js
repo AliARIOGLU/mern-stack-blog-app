@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 // routes
 import userRoutes from "./routes/user.route.js";
@@ -16,6 +17,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 const PORT = process.env.PORT ?? 3000;
+
+const __dirname = path.resolve();
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -34,6 +37,12 @@ app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // middleware
 app.use((err, req, res, next) => {
