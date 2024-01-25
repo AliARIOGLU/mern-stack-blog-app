@@ -10,15 +10,7 @@ import authRoutes from "./routes/auth.route.js";
 import postRoutes from "./routes/post.route.js";
 import commentRoutes from "./routes/comment.route.js";
 
-const app = express();
-
 dotenv.config();
-app.use(express.json());
-app.use(cookieParser());
-
-const PORT = process.env.PORT ?? 3000;
-
-const __dirname = path.resolve();
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -28,6 +20,15 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+const app = express();
+
+app.use(express.json());
+app.use(cookieParser());
+
+const PORT = process.env.PORT ?? 3000;
+
+const __dirname = path.resolve();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
