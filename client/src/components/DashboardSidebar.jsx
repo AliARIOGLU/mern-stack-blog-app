@@ -9,16 +9,14 @@ import {
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { signoutSuccess } from "../redux/user/userSlice";
+import { useSelector } from "react-redux";
+import { setSignoutSuccess } from "../redux/user/userActions";
 
 export const DashboardSidebar = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
 
   const { currentUser } = useSelector((state) => state.user);
-
-  const dispatch = useDispatch();
 
   const handleSignOut = async () => {
     try {
@@ -29,7 +27,7 @@ export const DashboardSidebar = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        dispatch(signoutSuccess());
+        setSignoutSuccess();
       }
     } catch (error) {
       console.log(error);

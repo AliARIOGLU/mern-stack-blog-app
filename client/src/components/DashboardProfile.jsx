@@ -2,7 +2,7 @@
 
 import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
@@ -12,17 +12,18 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import {
-  updateStart,
-  updateSuccess,
-  updateFailure,
-  deleteUserStart,
-  deleteUserSuccess,
-  deleteUserFailure,
-  signoutSuccess,
-} from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle, HiCamera } from "react-icons/hi";
 import { Link } from "react-router-dom";
+
+import {
+  setSignoutSuccess,
+  setUpdateStart,
+  setUpdateSuccess,
+  setUpdateFailure,
+  setDeleteUserStart,
+  setDeleteUserFailure,
+  setDeleteUserSuccess,
+} from "../redux/user/userActions";
 
 export const DashboardProfile = () => {
   const { currentUser, error, loading } = useSelector((state) => state.user);
@@ -36,8 +37,6 @@ export const DashboardProfile = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
-
-  const dispatch = useDispatch();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -100,7 +99,7 @@ export const DashboardProfile = () => {
       return;
     }
     try {
-      dispatch(updateStart());
+      setUpdateStart();
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: {
@@ -110,14 +109,14 @@ export const DashboardProfile = () => {
       });
       const data = await res.json();
       if (!res.ok) {
-        dispatch(updateFailure(data.message));
+        setUpdateFailure(data.message);
         setUpdateUserError(data.message);
       } else {
-        dispatch(updateSuccess(data));
+        setUpdateSuccess(data);
         setUpdateUserSuccess("User's profile updated successfully");
       }
     } catch (error) {
-      dispatch(updateFailure(error.message));
+      setUpdateFailure(error.message);
       setUpdateUserError(error.message);
     }
   };
@@ -125,18 +124,18 @@ export const DashboardProfile = () => {
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      dispatch(deleteUserStart());
+      setDeleteUserStart();
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: "DELETE",
       });
       const data = await res.json();
       if (!res.ok) {
-        dispatch(deleteUserFailure(data.message));
+        setDeleteUserFailure(data.message);
       } else {
-        dispatch(deleteUserSuccess(data));
+        setDeleteUserSuccess(data);
       }
     } catch (error) {
-      dispatch(deleteUserFailure(error.message));
+      setDeleteUserFailure(error.message);
     }
   };
 
@@ -149,7 +148,7 @@ export const DashboardProfile = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        dispatch(signoutSuccess());
+        setSignoutSuccess();
       }
     } catch (error) {
       console.log(error);

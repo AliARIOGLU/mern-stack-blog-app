@@ -2,13 +2,12 @@ import { app } from "../firebase";
 import { Button } from "flowbite-react";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { signInSuccess } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { setSignInSuccess } from "../redux/user/userActions";
 
 export const OAuth = () => {
   const auth = getAuth(app);
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const handleGoogleClick = async () => {
@@ -28,7 +27,7 @@ export const OAuth = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        dispatch(signInSuccess(data));
+        setSignInSuccess(data);
         navigate("/");
       }
     } catch (error) {

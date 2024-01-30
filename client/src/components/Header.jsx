@@ -5,9 +5,10 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 
 import { headerLinks } from "../constants";
-import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
+import { useTheme } from "../redux/theme/themeActions";
+import { setTheme } from "../redux/theme/themeActions";
 
 export const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +16,8 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
-  const { theme } = useSelector((state) => state.theme);
+
+  const { theme } = useTheme();
 
   const handleSignOut = async () => {
     try {
@@ -81,7 +83,7 @@ export const Header = () => {
       </Button>
       <div className="flex gap-2 md:order-2">
         <Button
-          onClick={() => dispatch(toggleTheme())}
+          onClick={() => setTheme()}
           className="w-12 h-10 hidden sm:inline"
           color="gray"
           pill

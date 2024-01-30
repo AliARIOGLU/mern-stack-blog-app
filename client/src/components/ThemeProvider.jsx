@@ -1,9 +1,9 @@
 /* eslint-disable */
 
-import { useSelector } from "react-redux";
+import { useTheme } from "../redux/theme/themeActions";
 
 export const ThemeProvider = ({ children }) => {
-  const { theme } = useSelector((state) => state.theme);
+  const { theme } = useTheme();
 
   return (
     <div className={theme}>
