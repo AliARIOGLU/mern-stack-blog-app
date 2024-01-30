@@ -8,6 +8,7 @@ import CreatePost from "./CreatePost";
 import UpdatePost from "./UpdatePost";
 import PostPage from "./PostPage";
 import Search from "./Search";
+import NotFound from "./NotFound";
 
 export {
   Home,
@@ -20,4 +21,5 @@ export {
   UpdatePost,
   PostPage,
   Search,
+  NotFound,
 };

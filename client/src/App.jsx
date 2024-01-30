@@ -12,6 +12,7 @@ import {
   UpdatePost,
   PostPage,
   Search,
+  NotFound,
 } from "./pages";
 
 // components
@@ -41,6 +42,7 @@ function App() {
         </Route>
         <Route path="/projects" element={<Projects />} />
         <Route path="/post/:postSlug" element={<PostPage />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
       <FooterSection />
     </BrowserRouter>
