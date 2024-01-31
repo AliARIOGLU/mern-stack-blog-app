@@ -1,5 +1,6 @@
 import Post from "../models/post.model.js";
 import { errorHandler } from "../utils/error.js";
+import { getMonthsData } from "../utils/getMonthsDate.js";
 
 export const create = async (req, res, next) => {
   const { title, content } = req.body;
@@ -56,22 +57,21 @@ export const getPosts = async (req, res, next) => {
 
     const totalPosts = await Post.countDocuments();
 
-    const now = new Date();
-
-    const oneMonthAgo = new Date(
-      now.getFullYear(),
-      now.getMonth() - 1,
-      now.getDate()
-    );
+    const { startOfThisMonth, startsOfLastMonth } = getMonthsData();
 
     const lastMonthPosts = await Post.countDocuments({
-      createdAt: { $gte: oneMonthAgo },
+      createdAt: { $gte: startsOfLastMonth, $lt: startOfThisMonth },
+    });
+
+    const thisMonthPosts = await Post.countDocuments({
+      createdAt: { $gte: startOfThisMonth },
     });
 
     res.status(200).json({
       posts,
       totalPosts,
       lastMonthPosts,
+      thisMonthPosts,
     });
   } catch (error) {
     next(error);

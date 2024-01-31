@@ -2,6 +2,7 @@ import bcryptjs from "bcryptjs";
 
 import { errorHandler } from "../utils/error.js";
 import User from "../models/user.model.js";
+import { getMonthsData } from "../utils/getMonthsDate.js";
 
 export const updateUser = async (req, res, next) => {
   const { username, password } = req.body;
@@ -100,21 +101,21 @@ export const getUsers = async (req, res, next) => {
 
     const totalUsers = await User.countDocuments();
 
-    const now = new Date();
+    const { startOfThisMonth, startsOfLastMonth } = getMonthsData();
 
-    const oneMonthAgo = new Date(
-      now.getFullYear(),
-      now.getMonth() - 1,
-      now.getDate()
-    );
     const lastMonthUsers = await User.countDocuments({
-      createdAt: { $gte: oneMonthAgo },
+      createdAt: { $gte: startsOfLastMonth, $lt: startOfThisMonth },
+    });
+
+    const thisMonthUsers = await User.countDocuments({
+      createdAt: { $gte: startOfThisMonth },
     });
 
     res.status(200).json({
       users: usersWithoutPassword,
       totalUsers,
       lastMonthUsers,
+      thisMonthUsers,
     });
   } catch (error) {
     next(error);
