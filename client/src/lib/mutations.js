@@ -1,4 +1,4 @@
-import { signin, signout } from "./api";
+import { signin, signout, signup } from "./api";
 import {
   setSignInFailure,
   // setSignInFailure,
@@ -30,6 +30,15 @@ export const useSignIn = () => {
     onError: (error) => {
       const errorMessage = error.message.split(":")[1];
       setSignInFailure(errorMessage);
+    },
+  });
+};
+
+export const useSignUp = () => {
+  return useMutation({
+    mutationFn: (data) => signup(data),
+    onError: (error) => {
+      return error;
     },
   });
 };

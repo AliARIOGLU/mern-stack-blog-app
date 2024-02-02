@@ -1,14 +1,13 @@
-import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { OAuth } from "../components/OAuth";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSignUp } from "../lib/mutations";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
+  const { mutateAsync, isPending, error } = useSignUp();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -17,31 +16,10 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const res = await mutateAsync(formData);
 
-    if (!formData.email || !formData.username || !formData.password) {
-      setError("Please fill out all fields!");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        return setError(data.message);
-      }
-      setLoading(false);
-      if (res.ok) {
-        navigate("/sign-in");
-      }
-    } catch (error) {
-      setError(error.message);
-      setLoading(false);
+    if (res) {
+      navigate("/sign-in");
     }
   };
 
@@ -71,6 +49,7 @@ const SignUp = () => {
                 placeholder="John Doe"
                 id="username"
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -80,6 +59,7 @@ const SignUp = () => {
                 placeholder="johndoe@gmail.com"
                 id="email"
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -94,9 +74,9 @@ const SignUp = () => {
             <Button
               gradientDuoTone="purpleToPink"
               type="submit"
-              disabled={loading}
+              disabled={isPending}
             >
-              {loading ? (
+              {isPending ? (
                 <>
                   <Spinner size="sm" />
                   <span className="pl-3">Loading...</span>
@@ -115,7 +95,7 @@ const SignUp = () => {
           </div>
           {error && (
             <Alert className="mt-5" color="failure">
-              {error}
+              {error.message}
             </Alert>
           )}
         </div>

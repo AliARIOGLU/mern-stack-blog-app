@@ -110,3 +110,23 @@ export const signin = async (formData) => {
     throw new Error(error);
   }
 };
+
+export const signup = async (formData) => {
+  try {
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[SIGN_UP_ERROR]", error);
+    throw new Error(error);
+  }
+};
