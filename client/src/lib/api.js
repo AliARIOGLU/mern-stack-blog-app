@@ -130,3 +130,25 @@ export const signup = async (formData) => {
     throw new Error(error);
   }
 };
+
+export const createPost = async (postData) => {
+  try {
+    const res = await fetch("/api/post/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[CREATE_POST_ERROR]", error);
+    throw new Error(error);
+  }
+};

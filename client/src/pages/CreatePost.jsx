@@ -14,15 +14,17 @@ import { useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
+import { useCreatePost } from "../lib/mutations";
 
 const CreatePost = () => {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
-  const [publishError, setPublishError] = useState(null);
 
   const navigate = useNavigate();
+
+  const { mutateAsync, error } = useCreatePost();
 
   const handleUploadImage = async () => {
     try {
@@ -63,26 +65,11 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setPublishError(data.message);
-        return;
-      }
 
-      if (res.ok) {
-        setPublishError(null);
-        navigate(`/post/${data?.slug}`);
-      }
-    } catch (error) {
-      setPublishError("Something went wrong");
+    const data = await mutateAsync(formData);
+
+    if (data) {
+      navigate(`/post/${data?.slug}`);
     }
   };
 
@@ -94,7 +81,6 @@ const CreatePost = () => {
           <TextInput
             type="text"
             placeholder="Title"
-            required
             id="title"
             className="flex-1"
             onChange={(e) =>
@@ -158,9 +144,9 @@ const CreatePost = () => {
         <Button type="submit" gradientDuoTone="purpleToPink" className="mb-5">
           Publish
         </Button>
-        {publishError && (
+        {error && (
           <Alert color="failure" className="mt-5">
-            {publishError}
+            {error.message}
           </Alert>
         )}
       </form>

@@ -1,4 +1,4 @@
-import { signin, signout, signup } from "./api";
+import { createPost, signin, signout, signup } from "./api";
 import {
   setSignInFailure,
   // setSignInFailure,
@@ -6,7 +6,7 @@ import {
   setSignInSuccess,
   setSignoutSuccess,
 } from "../redux/user/userActions";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useSignOut = () => {
   return useMutation({
@@ -39,6 +39,24 @@ export const useSignUp = () => {
     mutationFn: (data) => signup(data),
     onError: (error) => {
       return error;
+    },
+  });
+};
+
+export const useCreatePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (post) => createPost(post),
+
+    onSettled: async (_, error) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["posts"],
+        });
+      }
     },
   });
 };
