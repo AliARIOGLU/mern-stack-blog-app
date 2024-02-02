@@ -14,7 +14,7 @@ import { DashboardPostsTable } from "./DashboardPostsTable";
 export const DashboardContent = () => {
   const { currentUser } = useSelector((state) => state.user);
 
-  const { data: postsData, isLoading: isPostsLoading } = useGetPosts();
+  const { data: postsData, isLoading: isPostsLoading } = useGetPosts("limit=5");
   const { data: usersData, isLoading: isUsersLoading } = useGetUsers();
   const { data: commentsData, isLoading: isCommentsLoading } = useGetComments();
 

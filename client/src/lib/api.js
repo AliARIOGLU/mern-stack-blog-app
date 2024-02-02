@@ -13,9 +13,9 @@ export const getUsers = async () => {
   }
 };
 
-export const getPosts = async () => {
+export const getPosts = async (query) => {
   try {
-    const res = await fetch("/api/post/getposts?limit=5");
+    const res = await fetch(`/api/post/getposts${query ? query : ""}`);
     const posts = await res.json();
 
     if (!res.ok) {

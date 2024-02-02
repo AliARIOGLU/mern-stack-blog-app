@@ -12,10 +12,10 @@ export const useGetUsers = () => {
 
 // Posts
 
-export const useGetPosts = () => {
+export const useGetPosts = (query) => {
   return useQuery({
     queryKey: ["posts"],
-    queryFn: () => getPosts(),
+    queryFn: () => getPosts(query),
   });
 };
 
