@@ -1,31 +1,17 @@
-import { useEffect, useState } from "react";
 import { PostCard } from "./PostCard";
+import { useGetPosts } from "../lib/queries";
 
 const POST_LIMIT = 3;
 
 export const RecentArticles = () => {
-  const [recentPosts, setRecentPosts] = useState([]);
-
-  useEffect(() => {
-    const fetchRecentPosts = async () => {
-      try {
-        const res = await fetch(`/api/post/getposts?limit=${POST_LIMIT}`);
-        const data = await res.json();
-
-        if (res.ok) {
-          setRecentPosts(data.posts);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchRecentPosts();
-  }, []);
+  const { data, isSuccess } = useGetPosts(`limit=${POST_LIMIT}`);
 
   return (
-    <div className="flex flex-wrap gap-5 mt-5 justfiy-center">
-      {recentPosts.length > 0 &&
-        recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
-    </div>
+    <>
+      <div className="flex flex-wrap gap-5 mt-5 justfiy-center">
+        {isSuccess > 0 &&
+          data.posts.map((post) => <PostCard key={post._id} post={post} />)}
+      </div>
+    </>
   );
 };
