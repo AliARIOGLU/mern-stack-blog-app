@@ -13,9 +13,23 @@ export const getUsers = async () => {
   }
 };
 
+export const getUserById = async (id) => {
+  try {
+    const res = await fetch(`/api/user/${id}`);
+    const user = await res.json();
+    if (!res.ok) {
+      throw Error;
+    }
+
+    return user;
+  } catch (error) {
+    console.log("[GET_USER_BY_ID_ERROR]", error);
+  }
+};
+
 export const getPosts = async (query) => {
   try {
-    const res = await fetch(`/api/post/getposts${query ? query : ""}`);
+    const res = await fetch(`/api/post/getposts?${query ? query : ""}`);
     const posts = await res.json();
 
     if (!res.ok) {

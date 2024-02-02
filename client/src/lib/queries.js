@@ -1,5 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getComments, getPosts, getPostsById, getUsers } from "./api";
+import {
+  getComments,
+  getPosts,
+  getPostsById,
+  getUserById,
+  getUsers,
+} from "./api";
 
 // Users
 
@@ -7,6 +13,13 @@ export const useGetUsers = () => {
   return useQuery({
     queryKey: ["users"],
     queryFn: () => getUsers(),
+  });
+};
+
+export const useGetUserById = (id) => {
+  return useQuery({
+    queryKey: ["users", { id }],
+    queryFn: () => getUserById(id),
   });
 };
 
