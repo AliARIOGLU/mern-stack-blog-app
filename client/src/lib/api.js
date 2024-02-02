@@ -73,6 +73,21 @@ export const getComments = async () => {
   }
 };
 
+export const getCommentsById = async (id) => {
+  try {
+    const res = await fetch(`/api/comment/getpostcomments/${id}`);
+    const comments = await res.json();
+
+    if (!res.ok) {
+      throw Error;
+    }
+
+    return comments;
+  } catch (error) {
+    console.log("[GET_COMMENTS_BY_ID_ERROR]", error);
+  }
+};
+
 // Mutation APIs
 
 export const signout = async () => {
@@ -149,6 +164,90 @@ export const createPost = async (postData) => {
     return await res.json();
   } catch (error) {
     console.log("[CREATE_POST_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const createComment = async (data) => {
+  try {
+    const res = await fetch(`/api/comment/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: data.content,
+        userId: data.userId,
+        postId: data.postId,
+      }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[CREATE_COMMENT_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const editComment = async (comment) => {
+  try {
+    const res = await fetch(`/api/comment/editComment/${comment.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: comment.content }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[EDIT_COMMENT_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const deleteComment = async (id) => {
+  try {
+    const res = await fetch(`/api/comment/deleteComment/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[DELETE_COMMENT_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const likeComment = async (id) => {
+  try {
+    const res = await fetch(`/api/comment/likeComment/${id}`, {
+      method: "PUT",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[COMMENT_LIKE_ERROR]", error);
     throw new Error(error);
   }
 };

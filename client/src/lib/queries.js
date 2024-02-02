@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   getComments,
+  getCommentsById,
   getPosts,
   getPostsById,
   getUserById,
@@ -45,5 +46,12 @@ export const useGetComments = () => {
   return useQuery({
     queryKey: ["comments"],
     queryFn: () => getComments(),
+  });
+};
+
+export const useGetCommentsById = (id) => {
+  return useQuery({
+    queryKey: ["comments", { id }],
+    queryFn: () => getCommentsById(id),
   });
 };

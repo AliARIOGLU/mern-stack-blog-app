@@ -1,20 +1,18 @@
 /* eslint-disable */
 
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import { Button, Textarea } from "flowbite-react";
+import { useEditComment } from "../lib/mutations";
+import { useGetUserById } from "../lib/queries";
 
-export const Comment = ({
-  comment,
-  onLike,
-  currentUser,
-  handleEditSubmit,
-  onDelete,
-}) => {
-  const [user, setUser] = useState({});
+export const Comment = ({ comment, onLike, currentUser, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
+
+  const { data: user } = useGetUserById(comment.userId);
+  const editCommentMutation = useEditComment();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -22,46 +20,23 @@ export const Comment = ({
   };
 
   const handleSave = async () => {
-    try {
-      const res = await fetch(`/api/comment/editComment/${comment._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ content: editedContent }),
-      });
+    const res = await editCommentMutation.mutateAsync({
+      id: comment._id,
+      content: editedContent,
+    });
 
-      if (res.ok) {
-        setIsEditing(false);
-        handleEditSubmit(comment, editedContent);
-      }
-    } catch (error) {
-      console.log(error.message);
+    if (res) {
+      setIsEditing(false);
     }
   };
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await fetch(`/api/user/${comment.userId}`);
-        const data = await res.json();
-        if (res.ok) {
-          setUser(data);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getUser();
-  }, [comment]);
 
   return (
     <div className="flex p-4 border-b dark:border-gray-600 text-sm">
       <div className="flex-shrink-0 mr-3">
         <img
           className="w-10 h-10 rounded-full bg-gray-200"
-          src={user.profilePicture}
-          alt={user.username}
+          src={user?.profilePicture}
+          alt={user?.username}
         />
       </div>
       <div className="flex-1">

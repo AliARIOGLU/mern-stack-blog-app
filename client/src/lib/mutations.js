@@ -1,4 +1,13 @@
-import { createPost, signin, signout, signup } from "./api";
+import {
+  createComment,
+  createPost,
+  deleteComment,
+  editComment,
+  likeComment,
+  signin,
+  signout,
+  signup,
+} from "./api";
 import {
   setSignInFailure,
   // setSignInFailure,
@@ -55,6 +64,79 @@ export const useCreatePost = () => {
       } else {
         await queryClient.invalidateQueries({
           queryKey: ["posts"],
+        });
+      }
+    },
+  });
+};
+
+export const useCreateComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => createComment(data),
+
+    onSettled: async (_, error) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["comments"],
+        });
+      }
+    },
+  });
+};
+
+export const useEditComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (comment) => editComment(comment),
+
+    onSettled: async (_, error, comment) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["comments"] });
+        await queryClient.invalidateQueries({
+          queryKey: ["comments", { id: comment._id }],
+        });
+      }
+    },
+  });
+};
+
+export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) => deleteComment(id),
+
+    onSettled: async (_, error) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["comments"],
+        });
+      }
+    },
+  });
+};
+
+export const useLikeComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) => likeComment(id),
+
+    onSettled: async (_, error) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["comments"],
         });
       }
     },
