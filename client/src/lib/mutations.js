@@ -1,5 +1,11 @@
-import { signout } from "./api";
-import { setSignoutSuccess } from "../redux/user/userActions";
+import { signin, signout } from "./api";
+import {
+  setSignInFailure,
+  // setSignInFailure,
+  setSignInStart,
+  setSignInSuccess,
+  setSignoutSuccess,
+} from "../redux/user/userActions";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSignOut = () => {
@@ -8,6 +14,22 @@ export const useSignOut = () => {
 
     onSuccess: () => {
       setSignoutSuccess();
+    },
+  });
+};
+
+export const useSignIn = () => {
+  return useMutation({
+    mutationFn: (data) => signin(data),
+    onMutate: () => {
+      setSignInStart();
+    },
+    onSuccess: (data) => {
+      setSignInSuccess(data);
+    },
+    onError: (error) => {
+      const errorMessage = error.message.split(":")[1];
+      setSignInFailure(errorMessage);
     },
   });
 };

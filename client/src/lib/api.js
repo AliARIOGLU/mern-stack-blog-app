@@ -90,3 +90,23 @@ export const signout = async () => {
     console.log("[SIGN_OUT_ERROR]", error);
   }
 };
+
+export const signin = async (formData) => {
+  try {
+    const res = await fetch("/api/auth/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[SIGN_IN_ERROR]", error);
+    throw new Error(error);
+  }
+};

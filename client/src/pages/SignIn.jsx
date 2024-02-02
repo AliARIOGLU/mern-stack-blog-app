@@ -4,11 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { OAuth } from "../components/OAuth";
-import {
-  setSignInStart,
-  setSignInFailure,
-  setSignInSuccess,
-} from "../redux/user/userActions";
+import { setSignInFailure } from "../redux/user/userActions";
+import { useSignIn } from "../lib/mutations";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -21,6 +18,8 @@ const SignIn = () => {
     setFormData({ ...formData, [id]: value.trim() });
   };
 
+  const signInMutation = useSignIn();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,23 +28,10 @@ const SignIn = () => {
       return;
     }
 
-    try {
-      setSignInStart();
-      const res = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        setSignInFailure(data.message);
-      }
-      if (res.ok) {
-        setSignInSuccess(data);
-        navigate("/");
-      }
-    } catch (error) {
-      setSignInFailure(error.message);
+    const res = await signInMutation.mutateAsync(formData);
+
+    if (res) {
+      navigate("/");
     }
   };
 
