@@ -1,3 +1,5 @@
+// Query APIs
+
 export const getUsers = async () => {
   try {
     const res = await fetch("/api/user/getusers?limit=5");
@@ -68,5 +70,23 @@ export const getComments = async () => {
     return comments;
   } catch (error) {
     console.log("[GET_COMMENTS_ERROR]", error);
+  }
+};
+
+// Mutation APIs
+
+export const signout = async () => {
+  try {
+    const res = await fetch("/api/user/signout", {
+      method: "POST",
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw Error;
+    }
+
+    return data;
+  } catch (error) {
+    console.log("[SIGN_OUT_ERROR]", error);
   }
 };

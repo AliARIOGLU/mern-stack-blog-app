@@ -13,7 +13,7 @@ import {
   updateSuccess,
 } from "./userSlice";
 
-export const useCurrentUser = () => useSelector((state) => state.currentUser);
+export const useCurrentUser = () => useSelector((state) => state.user);
 
 export const setSignInStart = () => store.dispatch(signInStart());
 export const setSignInSuccess = (payload) =>

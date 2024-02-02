@@ -2,37 +2,26 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { Button, Navbar, TextInput, Dropdown, Avatar } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
 
 import { headerLinks } from "../constants";
-import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import { useTheme } from "../redux/theme/themeActions";
 import { setTheme } from "../redux/theme/themeActions";
+import { useSignOut } from "../lib/mutations";
+import { useCurrentUser } from "../redux/user/userActions";
 
 export const Header = () => {
+  const { currentUser } = useCurrentUser();
   const [searchTerm, setSearchTerm] = useState("");
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { currentUser } = useSelector((state) => state.user);
 
   const { theme } = useTheme();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const signOutMutation = useSignOut();
 
   const handleSignOut = async () => {
-    try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        dispatch(signoutSuccess());
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await signOutMutation.mutateAsync();
   };
 
   const handleSubmit = async (e) => {
