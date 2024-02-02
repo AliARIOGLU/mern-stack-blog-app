@@ -10,7 +10,7 @@ import {
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { setSignoutSuccess } from "../redux/user/userActions";
+import { useSignOut } from "../lib/mutations";
 
 export const DashboardSidebar = () => {
   const location = useLocation();
@@ -18,20 +18,10 @@ export const DashboardSidebar = () => {
 
   const { currentUser } = useSelector((state) => state.user);
 
+  const signOutMutation = useSignOut();
+
   const handleSignOut = async () => {
-    try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        setSignoutSuccess();
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await signOutMutation.mutateAsync();
   };
 
   useEffect(() => {
