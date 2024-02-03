@@ -33,13 +33,18 @@ export const useGetPosts = (query) => {
   });
 };
 
-export const useGetPostsById = (id, page) => {
+export const useGetPostsById = (userId, page, postId) => {
   return useQuery({
-    queryKey: ["posts", { id }, page],
+    queryKey: ["posts", { id: userId }, page],
     queryFn: () => {
       const limit = page * 9;
+      const query = {
+        userId,
+        limit,
+        postId,
+      };
 
-      return getPostsById(id, limit);
+      return getPostsById(query);
     },
     placeholderData: keepPreviousData,
   });

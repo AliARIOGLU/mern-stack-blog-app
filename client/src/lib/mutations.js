@@ -4,6 +4,7 @@ import {
   deleteComment,
   deletePost,
   editComment,
+  editPost,
   likeComment,
   signin,
   signout,
@@ -152,6 +153,25 @@ export const useDeletePost = () => {
       const { postId, userId } = data;
       return deletePost(postId, userId);
     },
+
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["posts", { id: variables.userId }],
+        });
+      }
+    },
+  });
+};
+
+export const useEditPost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ postId, userId, formData }) =>
+      editPost(postId, userId, formData),
 
     onSettled: async (_, error, variables) => {
       if (error) {

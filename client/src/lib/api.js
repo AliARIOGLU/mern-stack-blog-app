@@ -44,9 +44,13 @@ export const getPosts = async (query) => {
   }
 };
 
-export const getPostsById = async (id, limit) => {
+export const getPostsById = async ({ userId, limit, postId }) => {
   try {
-    const res = await fetch(`/api/post/getposts?userId=${id}&limit=${limit}`);
+    const res = await fetch(
+      `/api/post/getposts?userId=${userId ?? ""}&limit=${limit ?? ""}&postId=${
+        postId ?? ""
+      }`
+    );
     const posts = await res.json();
 
     if (!res.ok) {
@@ -266,6 +270,28 @@ export const deletePost = async (postId, userId) => {
     return await res.json();
   } catch (error) {
     console.log("[DELETE_POST_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const editPost = async (postId, userId, formData) => {
+  try {
+    const res = await fetch(`/api/post/updatepost/${postId}/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[UPDATE_POST_ERROR]", error);
     throw new Error(error);
   }
 };
