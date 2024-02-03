@@ -3,24 +3,7 @@
 import { Table } from "flowbite-react";
 import { SingleUser } from "./SingleUser";
 
-export const UserList = ({ users, showMore, setUsers, setShowMore }) => {
-  const handleShowMore = async () => {
-    const startIndex = users.length;
-
-    try {
-      const res = await fetch(`/api/user/getusers?startIndex=${startIndex}`);
-      const data = await res.json();
-      if (res.ok) {
-        setUsers((prevUsers) => [...prevUsers, ...data.users]);
-        if (data.users.length < 9) {
-          setShowMore(false);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+export const UserList = ({ users, showMore, handleShowMore }) => {
   return (
     <>
       <Table hoverable className="shadow-md">
@@ -34,7 +17,7 @@ export const UserList = ({ users, showMore, setUsers, setShowMore }) => {
         </Table.Head>
         <Table.Body>
           {users.map((user) => (
-            <SingleUser user={user} key={user._id} setUsers={setUsers} />
+            <SingleUser user={user} key={user._id} />
           ))}
         </Table.Body>
       </Table>

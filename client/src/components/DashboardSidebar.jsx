@@ -86,7 +86,7 @@ export const DashboardSidebar = () => {
                   labelColor="dark"
                   as="div"
                 >
-                  Users
+                  Comments
                 </Sidebar.Item>
               </Link>
             </>

@@ -4,6 +4,7 @@ import { UserPosts } from "./UserPosts";
 import { useCurrentUser } from "../redux/user/userActions";
 import { useGetPostsById } from "../lib/queries";
 import { Spinner } from "flowbite-react";
+
 export const DashboardPosts = () => {
   const [page, setPage] = useState(1);
   const { currentUser } = useCurrentUser();

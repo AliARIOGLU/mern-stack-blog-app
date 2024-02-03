@@ -10,10 +10,15 @@ import {
 
 // Users
 
-export const useGetUsers = () => {
+export const useGetUsers = (currentUser, page) => {
   return useQuery({
-    queryKey: ["users"],
-    queryFn: () => getUsers(),
+    queryKey: ["users", page],
+    queryFn: () => {
+      const limit = page * 9;
+      return getUsers(limit);
+    },
+    enabled: currentUser?.isAdmin,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -52,10 +57,16 @@ export const useGetPostsById = (userId, page, postId) => {
 
 // Comments
 
-export const useGetComments = () => {
+export const useGetComments = (currentUser, page) => {
   return useQuery({
-    queryKey: ["comments"],
-    queryFn: () => getComments(),
+    queryKey: ["comments", page],
+    queryFn: () => {
+      const limit = page * 9;
+
+      return getComments(limit);
+    },
+    enabled: currentUser?.isAdmin,
+    placeholderData: keepPreviousData,
   });
 };
 

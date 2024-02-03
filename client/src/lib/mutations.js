@@ -3,6 +3,7 @@ import {
   createPost,
   deleteComment,
   deletePost,
+  deleteUser,
   editComment,
   editPost,
   likeComment,
@@ -179,6 +180,24 @@ export const useEditPost = () => {
       } else {
         await queryClient.invalidateQueries({
           queryKey: ["posts", { id: variables.userId }],
+        });
+      }
+    },
+  });
+};
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) => deleteUser(id),
+
+    onSettled: async (_, error) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["users"],
         });
       }
     },

@@ -1,78 +1,57 @@
-import { Modal, Table, Button } from "flowbite-react";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { Modal, Table, Button, Spinner } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
+import { useGetComments } from "../lib/queries";
+import { useDeleteComment } from "../lib/mutations";
+import { useCurrentUser } from "../redux/user/userActions";
+
 export const DashboardComments = () => {
-  const { currentUser } = useSelector((state) => state.user);
-  const [comments, setComments] = useState([]);
-  const [showMore, setShowMore] = useState(true);
+  const { currentUser } = useCurrentUser();
   const [showModal, setShowModal] = useState(false);
   const [commentIdToDelete, setCommentIdToDelete] = useState("");
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const res = await fetch(`/api/comment/getcomments`);
-        const data = await res.json();
-        if (res.ok) {
-          setComments(data.comments);
-          if (data.comments.length < 9) {
-            setShowMore(false);
-          }
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    if (currentUser.isAdmin) {
-      fetchComments();
-    }
-  }, [currentUser._id, currentUser.isAdmin]);
+  const [page, setPage] = useState(1);
+
+  const {
+    data: commentsData,
+    isSuccess,
+    isLoading,
+  } = useGetComments(currentUser, page);
+
+  const deleteCommentMutation = useDeleteComment();
+
+  const showMore = commentsData?.totalComments > page * 9;
 
   const handleShowMore = async () => {
-    const startIndex = comments.length;
-    try {
-      const res = await fetch(
-        `/api/comment/getcomments?startIndex=${startIndex}`
-      );
-      const data = await res.json();
-      if (res.ok) {
-        setComments((prev) => [...prev, ...data.comments]);
-        if (data.comments.length < 9) {
-          setShowMore(false);
-        }
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+    setPage((page) => page + 1);
   };
 
   const handleDeleteComment = async () => {
     setShowModal(false);
-    try {
-      const res = await fetch(
-        `/api/comment/deleteComment/${commentIdToDelete}`,
-        {
-          method: "DELETE",
-        }
-      );
-      const data = await res.json();
-      if (res.ok) {
-        setComments((prev) =>
-          prev.filter((comment) => comment._id !== commentIdToDelete)
-        );
-        setShowModal(false);
-      } else {
-        console.log(data.message);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+    deleteCommentMutation.mutateAsync(commentIdToDelete);
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center w-full">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (commentsData?.comments?.length === 0) {
+    return (
+      <div className="min-h-screen flex justify-center items-center w-full">
+        <p className="text-slate-700 text-2xl italic dark:text-slate-200 md:text-4xl">
+          There is no comments yet!
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="table-auto overflow-x-scroll sm:overflow-hidden md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser.isAdmin && comments.length > 0 ? (
+      {currentUser.isAdmin && isSuccess > 0 && (
         <>
           <Table hoverable className="shadow-md">
             <Table.Head>
@@ -83,7 +62,7 @@ export const DashboardComments = () => {
               <Table.HeadCell>UserId</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
             </Table.Head>
-            {comments.map((comment) => (
+            {commentsData.comments.map((comment) => (
               <Table.Body className="divide-y" key={comment._id}>
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell>
@@ -117,8 +96,6 @@ export const DashboardComments = () => {
             </button>
           )}
         </>
-      ) : (
-        <p>You have no comments yet!</p>
       )}
       <Modal
         show={showModal}

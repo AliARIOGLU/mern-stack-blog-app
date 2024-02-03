@@ -55,7 +55,15 @@ export const getPosts = async (req, res, next) => {
       .skip(startIndex)
       .limit(limit);
 
-    const totalPosts = await Post.countDocuments({ userId: req.query.userId });
+    let totalPosts;
+
+    if (req.query.userId) {
+      totalPosts = await Post.countDocuments({
+        userId: req.query.userId,
+      });
+    } else {
+      totalPosts = await Post.countDocuments({});
+    }
 
     const { startOfThisMonth, startsOfLastMonth } = getMonthsData();
 

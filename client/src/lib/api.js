@@ -1,8 +1,8 @@
 // Query APIs
 
-export const getUsers = async () => {
+export const getUsers = async (limit = 5) => {
   try {
-    const res = await fetch("/api/user/getusers?limit=5");
+    const res = await fetch(`/api/user/getusers?limit=${limit}`);
     const users = await res.json();
 
     if (!res.ok) {
@@ -63,9 +63,9 @@ export const getPostsById = async ({ userId, limit, postId }) => {
   }
 };
 
-export const getComments = async () => {
+export const getComments = async (limit) => {
   try {
-    const res = await fetch("/api/comment/getcomments?limit=5");
+    const res = await fetch(`/api/comment/getcomments?limit=${limit}`);
     const comments = await res.json();
     if (!res.ok) {
       throw Error;
@@ -146,6 +146,24 @@ export const signup = async (formData) => {
     return await res.json();
   } catch (error) {
     console.log("[SIGN_UP_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const deleteUser = async (id) => {
+  try {
+    const res = await fetch(`/api/user/delete/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[DELETE_USER_ERROR]", error);
     throw new Error(error);
   }
 };

@@ -4,29 +4,18 @@ import { Table, Modal, Button } from "flowbite-react";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import { useDeleteUser } from "../lib/mutations";
 
-export const SingleUser = ({ user, setUsers }) => {
+export const SingleUser = ({ user }) => {
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState("");
+
+  const deleteUserMutation = useDeleteUser();
 
   const handleDeleteUser = async () => {
     setShowModal(false);
 
-    try {
-      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        setUsers((prevUsers) =>
-          prevUsers.filter((user) => user._id !== userIdToDelete)
-        );
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+    await deleteUserMutation.mutateAsync(userIdToDelete);
   };
 
   return (
@@ -44,18 +33,24 @@ export const SingleUser = ({ user, setUsers }) => {
         <Table.Cell>{user.email}</Table.Cell>
         <Table.Cell>
           {user.isAdmin ? (
-            <FaCheck className="text-green-500" />
+            <FaCheck className="text-green-500 mx-auto" />
           ) : (
-            <FaTimes className="text-red-500" />
+            <FaTimes className="text-red-500 mx-auto" />
           )}
         </Table.Cell>
         <Table.Cell>
           <span
             onClick={() => {
+              if (user.isAdmin) {
+                return;
+              }
+
               setShowModal(true);
               setUserIdToDelete(user._id);
             }}
-            className="font-medium text-red-500 cursor-pointer hover:bg-red-950 p-1 rounded-md hover:text-white transition-colors duration-200"
+            className={`font-medium text-red-500 cursor-pointer hover:bg-red-950 p-1 rounded-md hover:text-white transition-colors duration-200 ${
+              user.isAdmin ? "opacity-40 pointer-events-none" : ""
+            }`}
           >
             Delete
           </span>
