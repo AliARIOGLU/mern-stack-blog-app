@@ -2,6 +2,7 @@ import {
   createComment,
   createPost,
   deleteComment,
+  deletePost,
   editComment,
   likeComment,
   signin,
@@ -137,6 +138,27 @@ export const useLikeComment = () => {
       } else {
         await queryClient.invalidateQueries({
           queryKey: ["comments"],
+        });
+      }
+    },
+  });
+};
+
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => {
+      const { postId, userId } = data;
+      return deletePost(postId, userId);
+    },
+
+    onSettled: async (_, error, variables) => {
+      if (error) {
+        return error;
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["posts", { id: variables.userId }],
         });
       }
     },

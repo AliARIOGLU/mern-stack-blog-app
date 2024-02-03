@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   getComments,
   getCommentsById,
@@ -33,10 +33,15 @@ export const useGetPosts = (query) => {
   });
 };
 
-export const useGetPostsById = (id) => {
+export const useGetPostsById = (id, page) => {
   return useQuery({
-    queryKey: ["posts", { id }],
-    queryFn: () => getPostsById(id),
+    queryKey: ["posts", { id }, page],
+    queryFn: () => {
+      const limit = page * 9;
+
+      return getPostsById(id, limit);
+    },
+    placeholderData: keepPreviousData,
   });
 };
 

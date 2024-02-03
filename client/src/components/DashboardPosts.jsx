@@ -1,41 +1,35 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+
 import { UserPosts } from "./UserPosts";
-
+import { useCurrentUser } from "../redux/user/userActions";
+import { useGetPostsById } from "../lib/queries";
+import { Spinner } from "flowbite-react";
 export const DashboardPosts = () => {
-  const [userPosts, setUserPosts] = useState([]);
-  const [showMore, setShowMore] = useState(true);
-  const { currentUser } = useSelector((state) => state.user);
+  const [page, setPage] = useState(1);
+  const { currentUser } = useCurrentUser();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
-      const data = await res.json();
-      if (res.ok) {
-        setUserPosts(data.posts);
-        if (data.posts.length < 9) {
-          setShowMore(false);
-        }
-      }
-    };
-    if (currentUser?.isAdmin) {
-      fetchPosts();
-    }
-  }, [currentUser._id, currentUser?.isAdmin]);
+  const {
+    data: userPosts,
+    isLoading,
+    isSuccess,
+  } = useGetPostsById(currentUser._id, page);
+
+  const handleShowMore = () => {
+    setPage((page) => page + 1);
+  };
 
   return (
     <div className="table-auto overflow-x-scroll sm:overflow-hidden md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser?.isAdmin && userPosts.length > 0 ? (
+      {isLoading && <Spinner />}
+      {currentUser.isAdmin && isSuccess && (
         <UserPosts
-          showMore={showMore}
-          posts={userPosts}
+          showMore={userPosts.totalPosts > 9 * page}
+          posts={userPosts.posts}
           userId={currentUser._id}
-          setUserPosts={setUserPosts}
-          setShowMore={setShowMore}
+          handleShowMore={handleShowMore}
         />
-      ) : (
-        <p>You have no post yet!</p>
       )}
+      {userPosts?.posts?.length === 0 && <p>You have no post yet!</p>}
     </div>
   );
 };

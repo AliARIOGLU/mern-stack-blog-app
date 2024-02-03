@@ -44,9 +44,9 @@ export const getPosts = async (query) => {
   }
 };
 
-export const getPostsById = async (id) => {
+export const getPostsById = async (id, limit) => {
   try {
-    const res = await fetch(`/api/post/getposts?userId=${id}`);
+    const res = await fetch(`/api/post/getposts?userId=${id}&limit=${limit}`);
     const posts = await res.json();
 
     if (!res.ok) {
@@ -248,6 +248,24 @@ export const likeComment = async (id) => {
     return await res.json();
   } catch (error) {
     console.log("[COMMENT_LIKE_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const deletePost = async (postId, userId) => {
+  try {
+    const res = await fetch(`/api/post/deletepost/${postId}/${userId}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[DELETE_POST_ERROR]", error);
     throw new Error(error);
   }
 };

@@ -8,27 +8,8 @@ export const UserPosts = ({
   showMore,
   userId,
   setUserPosts,
-  setShowMore,
+  handleShowMore,
 }) => {
-  const handleShowMore = async () => {
-    const startIndex = posts.length;
-
-    try {
-      const res = await fetch(
-        `/api/post/getposts?userId=${userId}&startIndex=${startIndex}`
-      );
-      const data = await res.json();
-      if (res.ok) {
-        setUserPosts((prevUsers) => [...prevUsers, ...data.posts]);
-        if (data.posts.length < 9) {
-          setShowMore(false);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <Table hoverable className="shadow-md">
@@ -43,7 +24,7 @@ export const UserPosts = ({
           </Table.HeadCell>
         </Table.Head>
         <Table.Body>
-          {posts.map((post) => (
+          {posts?.map((post) => (
             <UserPost
               post={post}
               key={post._id}

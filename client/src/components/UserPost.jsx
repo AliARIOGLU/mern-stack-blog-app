@@ -1,35 +1,22 @@
 /* eslint-disable */
 
-import { Table, Modal, Button } from "flowbite-react";
 import { useState } from "react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { Table, Modal, Button } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-export const UserPost = ({ post, userId, setUserPosts }) => {
+import { useDeletePost } from "../lib/mutations";
+
+export const UserPost = ({ post, userId }) => {
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState("");
+
+  const deletePostMutation = useDeletePost();
 
   const handleDeletePost = async () => {
     setShowModal(false);
 
-    try {
-      const res = await fetch(
-        `/api/post/deletepost/${postIdToDelete}/${userId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        setUserPosts((prevPosts) =>
-          prevPosts.filter((post) => post._id !== postIdToDelete)
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await deletePostMutation.mutateAsync({ postId: postIdToDelete, userId });
   };
 
   return (
