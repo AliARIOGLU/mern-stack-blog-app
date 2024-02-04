@@ -1,16 +1,14 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import { OAuth } from "../components/OAuth";
-import { setSignInFailure } from "../redux/user/userActions";
+import { setSignInFailure, useCurrentUser } from "../redux/user/userActions";
 import { useSignIn } from "../lib/mutations";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const { loading, error } = useSelector((state) => state.user);
-
+  const { loading, error } = useCurrentUser();
   const navigate = useNavigate();
 
   const handleChange = (e) => {

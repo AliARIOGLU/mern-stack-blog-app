@@ -1,8 +1,8 @@
 /* eslint-disable */
 
-import { Alert, Button, Modal, TextInput } from "flowbite-react";
+import { Alert, Button, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+
 import {
   getDownloadURL,
   getStorage,
@@ -12,30 +12,24 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { HiOutlineExclamationCircle, HiCamera } from "react-icons/hi";
+import { HiCamera } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
-import {
-  setSignoutSuccess,
-  setUpdateStart,
-  setUpdateSuccess,
-  setUpdateFailure,
-  setDeleteUserStart,
-  setDeleteUserFailure,
-  setDeleteUserSuccess,
-} from "../redux/user/userActions";
+import { useCurrentUser } from "../redux/user/userActions";
+import { DeleteModal } from "./DeleteModal";
+import { useSignOut, useTerminateUser, useUpdateUser } from "../lib/mutations";
 
 export const DashboardProfile = () => {
-  const { currentUser, error, loading } = useSelector((state) => state.user);
+  const { currentUser, loading } = useCurrentUser();
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
-  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
-  const [updateUserError, setUpdateUserError] = useState(null);
+
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
+  const [clientUpdateError, setClientUpdateError] = useState(null);
   const filePickerRef = useRef();
 
   const handleImageChange = (e) => {
@@ -86,73 +80,38 @@ export const DashboardProfile = () => {
     setFormData({ ...formData, [id]: value });
   };
 
+  const signOutMutation = useSignOut();
+  const terminateUserMutation = useTerminateUser();
+  const {
+    mutateAsync,
+    error: updateUserError,
+    isSuccess: updateUserSuccess,
+  } = useUpdateUser();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setUpdateUserError(null);
-    setUpdateUserSuccess(null);
+    setClientUpdateError(null);
+
     if (Object.keys(formData).length === 0) {
-      setUpdateUserError("No changes made");
+      setClientUpdateError("No changes made");
       return;
     }
     if (imageFileUploading) {
-      setUpdateUserError("Please wait for image to upload");
+      setClientUpdateError("Please wait for image to upload");
       return;
     }
-    try {
-      setUpdateStart();
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setUpdateFailure(data.message);
-        setUpdateUserError(data.message);
-      } else {
-        setUpdateSuccess(data);
-        setUpdateUserSuccess("User's profile updated successfully");
-      }
-    } catch (error) {
-      setUpdateFailure(error.message);
-      setUpdateUserError(error.message);
-    }
+
+    await mutateAsync({ id: currentUser._id, formData });
   };
 
   const handleDeleteUser = async () => {
     setShowModal(false);
-    try {
-      setDeleteUserStart();
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setDeleteUserFailure(data.message);
-      } else {
-        setDeleteUserSuccess(data);
-      }
-    } catch (error) {
-      setDeleteUserFailure(error.message);
-    }
+
+    terminateUserMutation.mutateAsync(currentUser._id);
   };
 
   const handleSignOut = async () => {
-    try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        setSignoutSuccess();
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await signOutMutation.mutateAsync();
   };
 
   useEffect(() => {
@@ -176,7 +135,7 @@ export const DashboardProfile = () => {
           className="relative w-32 h-32 self-center cursor-pointer shadow-md rounded-full"
           onClick={() => filePickerRef.current.click()}
         >
-          <HiCamera className="absolute top-0 right-2 w-10 h-10 text-sky-900 dark:text-blue-500" />
+          <HiCamera className="absolute top-0 right-2 w-10 h-10 text-sky-900 dark:text-blue-500 z-10" />
           {imageFileUploadProgress && (
             <CircularProgressbar
               value={imageFileUploadProgress || 0}
@@ -261,43 +220,24 @@ export const DashboardProfile = () => {
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
-          {updateUserSuccess}
+          User&apos;s profile updated successfully
         </Alert>
       )}
       {updateUserError && (
         <Alert color="failure" className="mt-5">
-          {updateUserError}
+          {updateUserError.message}
         </Alert>
       )}
-      {error && (
+      {clientUpdateError && (
         <Alert color="failure" className="mt-5">
-          {error}
+          {clientUpdateError}
         </Alert>
       )}
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        popup
-        size="md"
-      >
-        <Modal.Header />
-        <Modal.Body>
-          <div className="text-center">
-            <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
-            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete your account?
-            </h3>
-            <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={handleDeleteUser}>
-                Yes, I'm sure
-              </Button>
-              <Button color="gray" onClick={() => setShowModal(false)}>
-                No, cancel
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <DeleteModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        handleDeleteUser={handleDeleteUser}
+      />
     </div>
   );
 };

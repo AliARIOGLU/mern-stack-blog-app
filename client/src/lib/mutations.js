@@ -10,13 +10,21 @@ import {
   signin,
   signout,
   signup,
+  terminateUser,
+  updateUser,
 } from "./api";
 import {
+  setDeleteUserFailure,
+  setDeleteUserStart,
+  setDeleteUserSuccess,
   setSignInFailure,
   // setSignInFailure,
   setSignInStart,
   setSignInSuccess,
   setSignoutSuccess,
+  setUpdateFailure,
+  setUpdateStart,
+  setUpdateSuccess,
 } from "../redux/user/userActions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -198,6 +206,54 @@ export const useDeleteUser = () => {
       } else {
         await queryClient.invalidateQueries({
           queryKey: ["users"],
+        });
+      }
+    },
+  });
+};
+
+export const useTerminateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) => terminateUser(id),
+
+    onMutate: () => {
+      setDeleteUserStart();
+    },
+
+    onSettled: async (_, error) => {
+      if (error) {
+        setDeleteUserFailure(error.message);
+        return error;
+      } else {
+        setDeleteUserSuccess();
+        await queryClient.invalidateQueries({
+          queryKey: ["users"],
+        });
+      }
+    },
+  });
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, formData }) => updateUser(id, formData),
+
+    onMutate: () => {
+      setUpdateStart();
+    },
+
+    onSettled: async (updatedUser, error, variables) => {
+      if (error) {
+        setUpdateFailure(error.message);
+        return error;
+      } else {
+        setUpdateSuccess(updatedUser);
+        await queryClient.invalidateQueries({
+          queryKey: ["users", { id: variables.id }],
         });
       }
     },

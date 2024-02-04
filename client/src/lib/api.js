@@ -168,6 +168,46 @@ export const deleteUser = async (id) => {
   }
 };
 
+export const terminateUser = async (id) => {
+  try {
+    const res = await fetch(`/api/user/delete/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[DELETE_USER_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
+export const updateUser = async (id, formData) => {
+  try {
+    const res = await fetch(`/api/user/update/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.log("[UPDATE_USER_ERROR]", error);
+    throw new Error(error);
+  }
+};
+
 export const createPost = async (postData) => {
   try {
     const res = await fetch("/api/post/create", {

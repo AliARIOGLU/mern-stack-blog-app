@@ -21,9 +21,10 @@ import { useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+
 import { useGetPostsById } from "../lib/queries";
 import { useEditPost } from "../lib/mutations";
+import { useCurrentUser } from "../redux/user/userActions";
 
 const UpdatePost = () => {
   const [file, setFile] = useState(null);
@@ -31,7 +32,7 @@ const UpdatePost = () => {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useCurrentUser();
   const { postId } = useParams();
   const navigate = useNavigate();
 

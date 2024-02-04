@@ -9,14 +9,14 @@ import {
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useSignOut } from "../lib/mutations";
+import { useCurrentUser } from "../redux/user/userActions";
 
 export const DashboardSidebar = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useCurrentUser();
 
   const signOutMutation = useSignOut();
 

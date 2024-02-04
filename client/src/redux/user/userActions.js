@@ -28,8 +28,7 @@ export const setUpdateFailure = (payload) =>
   store.dispatch(updateFailure(payload));
 
 export const setDeleteUserStart = () => store.dispatch(deleteUserStart());
-export const setDeleteUserSuccess = (payload) =>
-  store.dispatch(deleteUserSuccess(payload));
+export const setDeleteUserSuccess = () => store.dispatch(deleteUserSuccess());
 export const setDeleteUserFailure = (payload) =>
   store.dispatch(deleteUserFailure(payload));
 

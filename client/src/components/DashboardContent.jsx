@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import {
   HiAnnotation,
   HiDocumentText,
@@ -10,9 +9,10 @@ import { TotalCard } from "./TotalCard";
 import { DashboardUsersTable } from "./DashboardUsersTable";
 import { DashboardCommentsTable } from "./DashboardCommentsTable";
 import { DashboardPostsTable } from "./DashboardPostsTable";
+import { useCurrentUser } from "../redux/user/userActions";
 
 export const DashboardContent = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useCurrentUser();
 
   const { data: postsData, isLoading: isPostsLoading } = useGetPosts("limit=5");
   const { data: usersData, isLoading: isUsersLoading } = useGetUsers();
