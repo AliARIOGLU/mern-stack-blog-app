@@ -31,10 +31,19 @@ export const useGetUserById = (id) => {
 
 // Posts
 
-export const useGetPosts = (query) => {
+export const useGetPosts = (searchQuery, page) => {
   return useQuery({
-    queryKey: ["posts"],
-    queryFn: () => getPosts(query),
+    queryKey: ["posts", page],
+    queryFn: () => {
+      if (page) {
+        const limit = page * 9;
+        const query = `${searchQuery}&limit=${limit}`;
+
+        return getPosts(query);
+      }
+
+      return getPosts(searchQuery);
+    },
   });
 };
 

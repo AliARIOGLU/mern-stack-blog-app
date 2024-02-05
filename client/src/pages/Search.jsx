@@ -2,8 +2,11 @@
 
 import { Button, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PostCard } from "../components/PostCard";
+import { useGetPosts } from "../lib/queries";
+
+// TODO: Yarım kaldı
 
 const Search = () => {
   const [sidebarData, setSidebarData] = useState({
@@ -14,9 +17,16 @@ const Search = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [page, setPage] = useState(1);
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const query = location.search.slice(location.search.indexOf("&") + 1);
+
+  const { data, isSuccess } = useGetPosts(query, page);
+
+  console.log(data);
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
@@ -51,6 +61,7 @@ const Search = () => {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
+    console.log(searchQuery);
     const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
     if (!res.ok) return;
