@@ -39,8 +39,6 @@ export const useGetPosts = (searchQuery, page) => {
         const limit = page * 9;
         const query = `${searchQuery}&limit=${limit}`;
 
-        console.log("queries", query);
-
         return getPosts(query);
       }
 

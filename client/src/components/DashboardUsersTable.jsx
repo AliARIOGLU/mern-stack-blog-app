@@ -1,7 +1,8 @@
 /* eslint-disable */
 
-import { Button, Spinner, Table } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { LoadingArea } from "./LoadingArea";
 
 export const DashboardUsersTable = ({ usersData, isUsersLoading }) => {
   return (
@@ -12,7 +13,7 @@ export const DashboardUsersTable = ({ usersData, isUsersLoading }) => {
           <Link to={"/dashboard?tab=users"}>See all</Link>
         </Button>
       </div>
-      {isUsersLoading && <Spinner />}
+      {isUsersLoading && <LoadingArea />}
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>User image</Table.HeadCell>

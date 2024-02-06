@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
-import { Spinner, Alert } from "flowbite-react";
+import { Alert } from "flowbite-react";
 import { CallToAction } from "../components/CallToAction";
 import { CommentSection } from "../components/CommentSection";
 import { RecentArticles } from "../components/RecentArticles";
 
 import { useGetPosts } from "../lib/queries";
 import { SinglePost } from "../components/SinglePost";
+import { LoadingArea } from "../components/LoadingArea";
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -15,11 +16,7 @@ const PostPage = () => {
   );
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Spinner size="xl" />
-      </div>
-    );
+    return <LoadingArea size="lg" />;
   }
 
   if (isError) {

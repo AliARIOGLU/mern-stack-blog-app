@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { UserList } from "./UserList";
 import { useGetUsers } from "../lib/queries";
-import { Spinner } from "flowbite-react";
 import { useCurrentUser } from "../redux/user/userActions";
+import { LoadingArea } from "./LoadingArea";
 
 export const DashboardUsers = () => {
   const { currentUser } = useCurrentUser();
@@ -21,11 +21,7 @@ export const DashboardUsers = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen w-full flex justify-center items-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <LoadingArea size="lg" />;
   }
 
   if (usersData?.users?.length === 0) {

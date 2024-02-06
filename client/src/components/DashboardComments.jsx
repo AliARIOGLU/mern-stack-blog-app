@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Modal, Table, Button, Spinner } from "flowbite-react";
+import { Modal, Table, Button } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 import { useGetComments } from "../lib/queries";
 import { useDeleteComment } from "../lib/mutations";
 import { useCurrentUser } from "../redux/user/userActions";
+import { LoadingArea } from "./LoadingArea";
 
 export const DashboardComments = () => {
   const { currentUser } = useCurrentUser();
@@ -32,11 +33,7 @@ export const DashboardComments = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center w-full">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <LoadingArea size="lg" />;
   }
 
   if (commentsData?.comments?.length === 0) {

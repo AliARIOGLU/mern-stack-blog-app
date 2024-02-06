@@ -1,7 +1,8 @@
 /* eslint-disable */
 
-import { Button, Spinner, Table } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { LoadingArea } from "./LoadingArea";
 
 export const DashboardPostsTable = ({ postsData, isPostsLoading }) => {
   return (
@@ -12,7 +13,7 @@ export const DashboardPostsTable = ({ postsData, isPostsLoading }) => {
           <Link to={"/dashboard?tab=posts"}>See all</Link>
         </Button>
       </div>
-      {isPostsLoading && <Spinner />}
+      {isPostsLoading && <LoadingArea />}
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Post image</Table.HeadCell>

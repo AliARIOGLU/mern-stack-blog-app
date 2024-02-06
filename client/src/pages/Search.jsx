@@ -1,12 +1,12 @@
 /* eslint-disable */
 
-import { Button, Select, Spinner, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { PostCard } from "../components/PostCard";
-import { useGetPosts } from "../lib/queries";
+import { Button, Select, TextInput } from "flowbite-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-// TODO: Yarım kaldı
+import { useGetPosts } from "../lib/queries";
+import { PostCard } from "../components/PostCard";
+import { LoadingArea } from "../components/LoadingArea";
 
 const LIMIT = 9;
 
@@ -16,9 +16,7 @@ const Search = () => {
     sort: "desc",
     category: "uncategorized",
   });
-  // const [posts, setPosts] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [showMore, setShowMore] = useState(false);
+
   const [page, setPage] = useState(1);
 
   const location = useLocation();
@@ -82,14 +80,6 @@ const Search = () => {
     }
   }, [location.search]);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen w-full flex justify-center items-center">
-        <Spinner size="md" />
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-7 border-b md:border-b-0 md:border-r md:min-h-screen border-gray-500">
@@ -149,8 +139,9 @@ const Search = () => {
         <h1 className="text-3xl font-semibold sm:border-b border-gray-500 p-3 mt-5">
           Posts result:
         </h1>
+        {isLoading && <LoadingArea />}
         <div className="p-7 flex flex-wrap gap-4">
-          {searchedPosts.posts.length === 0 && (
+          {searchedPosts?.posts?.length === 0 && (
             <p className="text-xl text-gray-500">No post found!</p>
           )}
           {isSuccess &&

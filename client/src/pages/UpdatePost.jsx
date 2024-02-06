@@ -1,13 +1,6 @@
 /* eslint-disable */
 
-import {
-  Alert,
-  Button,
-  FileInput,
-  Select,
-  Spinner,
-  TextInput,
-} from "flowbite-react";
+import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import {
@@ -25,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetPostsById } from "../lib/queries";
 import { useEditPost } from "../lib/mutations";
 import { useCurrentUser } from "../redux/user/userActions";
+import { LoadingArea } from "../components/LoadingArea";
 
 const UpdatePost = () => {
   const [file, setFile] = useState(null);
@@ -96,11 +90,7 @@ const UpdatePost = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <LoadingArea size="lg" />;
   }
 
   return (

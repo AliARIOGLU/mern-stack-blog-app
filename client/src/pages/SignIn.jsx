@@ -1,10 +1,11 @@
-import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { Alert, Button, Label, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { OAuth } from "../components/OAuth";
 import { setSignInFailure, useCurrentUser } from "../redux/user/userActions";
 import { useSignIn } from "../lib/mutations";
+import { LoadingArea } from "../components/LoadingArea";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -77,7 +78,7 @@ const SignIn = () => {
             >
               {loading ? (
                 <>
-                  <Spinner size="sm" />
+                  <LoadingArea size="sm" />
                   <span className="pl-3">Loading...</span>
                 </>
               ) : (

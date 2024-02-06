@@ -3,7 +3,7 @@ import { useState } from "react";
 import { UserPosts } from "./UserPosts";
 import { useCurrentUser } from "../redux/user/userActions";
 import { useGetPostsById } from "../lib/queries";
-import { Spinner } from "flowbite-react";
+import { LoadingArea } from "./LoadingArea";
 
 export const DashboardPosts = () => {
   const [page, setPage] = useState(1);
@@ -21,7 +21,7 @@ export const DashboardPosts = () => {
 
   return (
     <div className="table-auto overflow-x-scroll sm:overflow-hidden md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {isLoading && <Spinner />}
+      {isLoading && <LoadingArea />}
       {currentUser.isAdmin && isSuccess && (
         <UserPosts
           showMore={userPosts.totalPosts > 9 * page}

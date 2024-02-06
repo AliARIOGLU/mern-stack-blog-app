@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { OAuth } from "../components/OAuth";
-import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { Alert, Button, Label, TextInput } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignUp } from "../lib/mutations";
+import { LoadingArea } from "../components/LoadingArea";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -78,7 +79,7 @@ const SignUp = () => {
             >
               {isPending ? (
                 <>
-                  <Spinner size="sm" />
+                  <LoadingArea size="sm" />
                   <span className="pl-3">Loading...</span>
                 </>
               ) : (

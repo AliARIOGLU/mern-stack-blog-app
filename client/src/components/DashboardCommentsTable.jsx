@@ -1,7 +1,8 @@
 /* eslint-disable */
 
-import { Button, Table, Spinner } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { LoadingArea } from "./LoadingArea";
 
 export const DashboardCommentsTable = ({ commentsData, isCommentsLoading }) => {
   return (
@@ -12,7 +13,7 @@ export const DashboardCommentsTable = ({ commentsData, isCommentsLoading }) => {
           <Link to={"/dashboard?tab=comments"}>See all</Link>
         </Button>
       </div>
-      {isCommentsLoading && <Spinner />}
+      {isCommentsLoading && <LoadingArea />}
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Comment content</Table.HeadCell>

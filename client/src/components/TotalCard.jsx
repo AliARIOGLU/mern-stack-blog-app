@@ -1,7 +1,8 @@
 /* eslint-disable */
 
 import { HiArrowNarrowUp, HiArrowNarrowDown } from "react-icons/hi";
-import { Spinner } from "flowbite-react";
+
+import { LoadingArea } from "./LoadingArea";
 
 export const TotalCard = ({
   totalTitle,
@@ -16,7 +17,7 @@ export const TotalCard = ({
   return (
     <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
       {isLoading ? (
-        <Spinner />
+        <LoadingArea />
       ) : (
         <>
           <div className="flex justify-between">
