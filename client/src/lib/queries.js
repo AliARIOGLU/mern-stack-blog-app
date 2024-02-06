@@ -33,11 +33,13 @@ export const useGetUserById = (id) => {
 
 export const useGetPosts = (searchQuery, page) => {
   return useQuery({
-    queryKey: ["posts", page],
+    queryKey: ["posts", searchQuery, page],
     queryFn: () => {
       if (page) {
         const limit = page * 9;
         const query = `${searchQuery}&limit=${limit}`;
+
+        console.log("queries", query);
 
         return getPosts(query);
       }

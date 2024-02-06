@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Button, Select, TextInput } from "flowbite-react";
+import { Button, Select, Spinner, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PostCard } from "../components/PostCard";
@@ -8,25 +8,31 @@ import { useGetPosts } from "../lib/queries";
 
 // TODO: Yarım kaldı
 
+const LIMIT = 9;
+
 const Search = () => {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
     category: "uncategorized",
   });
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [showMore, setShowMore] = useState(false);
+  // const [posts, setPosts] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [showMore, setShowMore] = useState(false);
   const [page, setPage] = useState(1);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const query = location.search.slice(location.search.indexOf("&") + 1);
+  const query = location.search.slice(location.search.indexOf("?") + 1);
 
-  const { data, isSuccess } = useGetPosts(query, page);
+  const {
+    data: searchedPosts,
+    isSuccess,
+    isLoading,
+  } = useGetPosts(query, page);
 
-  console.log(data);
+  const showMore = searchedPosts?.posts.length === page * LIMIT;
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
@@ -57,24 +63,7 @@ const Search = () => {
   };
 
   const handleShowMore = async () => {
-    const startIndex = posts.length;
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.set("startIndex", startIndex);
-    const searchQuery = urlParams.toString();
-    console.log(searchQuery);
-    const res = await fetch(`/api/post/getposts?${searchQuery}`);
-
-    if (!res.ok) return;
-
-    if (res.ok) {
-      const data = await res.json();
-      setPosts([...posts, ...data.posts]);
-      if (data.posts.length === 9) {
-        setShowMore(true);
-      } else {
-        setShowMore(false);
-      }
-    }
+    setPage((page) => page + 1);
   };
 
   useEffect(() => {
@@ -91,30 +80,15 @@ const Search = () => {
         category: categoryFromUrl,
       });
     }
-
-    const fetchPosts = async () => {
-      setLoading(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/getposts?${searchQuery}`);
-
-      if (!res.ok) {
-        setLoading(false);
-        return;
-      }
-
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data.posts);
-        setLoading(false);
-        if (data.posts.length === 9) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
-        }
-      }
-    };
-    fetchPosts();
   }, [location.search]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen w-full flex justify-center items-center">
+        <Spinner size="md" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -176,16 +150,13 @@ const Search = () => {
           Posts result:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
-          {!loading && posts.length === 0 && (
+          {searchedPosts.posts.length === 0 && (
             <p className="text-xl text-gray-500">No post found!</p>
           )}
-          {
-            // TODO: add spinner
-            loading && <p className="text-xl text-gray-500">Loading...</p>
-          }
-          {!loading &&
-            posts.length > 0 &&
-            posts.map((post) => <PostCard key={post._id} post={post} />)}
+          {isSuccess &&
+            searchedPosts.posts.map((post) => (
+              <PostCard key={post._id} post={post} />
+            ))}
           {showMore && (
             <button
               onClick={handleShowMore}
