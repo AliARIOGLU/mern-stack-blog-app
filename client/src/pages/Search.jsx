@@ -140,7 +140,7 @@ const Search = () => {
           Posts result:
         </h1>
         {isLoading && <LoadingArea />}
-        <div className="p-7 flex flex-wrap gap-4">
+        <div className="p-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {searchedPosts?.posts?.length === 0 && (
             <p className="text-xl text-gray-500">No post found!</p>
           )}

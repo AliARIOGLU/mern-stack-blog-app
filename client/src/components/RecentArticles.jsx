@@ -8,7 +8,7 @@ export const RecentArticles = () => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-5 mt-5 justfiy-center">
+      <div className="mt-5 grid grid-cols-1 sm:grid-col-2 md:grid-col-3 lg:grid-cols-4 gap-8">
         {isSuccess > 0 &&
           data.posts.map((post) => <PostCard key={post._id} post={post} />)}
       </div>

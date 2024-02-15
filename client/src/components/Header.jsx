@@ -67,7 +67,12 @@ export const Header = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
+      <Button
+        className="w-12 h-10 lg:hidden"
+        onClick={() => {}}
+        color="gray"
+        pill
+      >
         <AiOutlineSearch onClick={() => navigate("/search")} />
       </Button>
       <div className="flex gap-2 md:order-2">
