@@ -44,6 +44,8 @@ export const useGetPosts = (searchQuery, page) => {
 
       return getPosts(searchQuery);
     },
+
+    placeholderData: keepPreviousData,
   });
 };
 
