@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+import "react-circular-progressbar/dist/styles.css";
 import "./index.css";
 import { store, persistor } from "./redux/store";
 import { Provider } from "react-redux";

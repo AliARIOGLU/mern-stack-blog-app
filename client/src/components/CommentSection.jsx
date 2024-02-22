@@ -1,8 +1,11 @@
 /* eslint-disable */
 
-import { Button, Textarea, Alert, Modal } from "flowbite-react";
 import { useState } from "react";
+import { Button, Textarea, Alert, Modal } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import classNames from "classnames";
+
 import { Comment } from "./Comment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useCurrentUser } from "../redux/user/userActions";
@@ -102,9 +105,23 @@ export const CommentSection = ({ postId }) => {
             onChange={(e) => setComment(e.target.value)}
           />
           <div className="flex justify-between items-center mt-5">
-            <p className="text-gray-500 text-xs">
-              {200 - comment?.length} characters remaining.
-            </p>
+            <CircularProgressbar
+              value={comment.length / 2}
+              text={200 - comment.length < 20 ? 200 - comment.length : ""}
+              strokeWidth={8}
+              className={classNames(
+                "h-7 w-7 text-md overflow-hidden transition-all duration-200",
+                {
+                  "h-8 w-8": 200 - comment.length < 20,
+                }
+              )}
+              styles={buildStyles({
+                textSize: "48px",
+                pathColor: 200 - comment.length < 20 ? "rgb(253,210,1)" : "",
+                textColor: "gray",
+              })}
+            />
+
             <Button type="submit" outline gradientDuoTone="purpleToBlue">
               Submit
             </Button>
