@@ -84,7 +84,7 @@ const Search = () => {
     <div className="flex flex-col md:flex-row">
       <div className="p-7 border-b md:border-b-0 md:border-r md:min-h-screen border-gray-500">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             <label
               className="whitespace-nowrap font-semibold"
               htmlFor="searchTerm"
@@ -99,7 +99,7 @@ const Search = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             <label className="whitespace-nowrap font-semibold" htmlFor="sort">
               Sort:
             </label>
@@ -112,7 +112,7 @@ const Search = () => {
               <option value="asc">Oldest</option>
             </Select>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             <label
               className="whitespace-nowrap font-semibold"
               htmlFor="category"

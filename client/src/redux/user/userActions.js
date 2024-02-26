@@ -11,6 +11,7 @@ import {
   updateFailure,
   updateStart,
   updateSuccess,
+  errorReset,
 } from "./userSlice";
 
 export const useCurrentUser = () => useSelector((state) => state.user);
@@ -33,3 +34,5 @@ export const setDeleteUserFailure = (payload) =>
   store.dispatch(deleteUserFailure(payload));
 
 export const setSignoutSuccess = () => store.dispatch(signoutSuccess());
+
+export const setErrorReset = () => store.dispatch(errorReset());

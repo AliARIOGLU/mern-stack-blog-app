@@ -48,8 +48,7 @@ export const useSignIn = () => {
       setSignInSuccess(data);
     },
     onError: (error) => {
-      const errorMessage = error.message.split(":")[1];
-      setSignInFailure(errorMessage);
+      setSignInFailure(error.message);
     },
   });
 };

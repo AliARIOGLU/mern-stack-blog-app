@@ -126,7 +126,7 @@ export const signin = async (formData) => {
     return await res.json();
   } catch (error) {
     console.log("[SIGN_IN_ERROR]", error);
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
@@ -146,7 +146,7 @@ export const signup = async (formData) => {
     return await res.json();
   } catch (error) {
     console.log("[SIGN_UP_ERROR]", error);
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 

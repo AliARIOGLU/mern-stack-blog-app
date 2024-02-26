@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { OAuth } from "../components/OAuth";
-import { Alert, Button, Label, TextInput } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
+import { Alert, Button, Label, TextInput } from "flowbite-react";
+
+import { OAuth } from "../components/OAuth";
 import { useSignUp } from "../lib/mutations";
 import { LoadingArea } from "../components/LoadingArea";
 
@@ -26,7 +27,7 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen mt-20">
-      <div className="flex gap-5 p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center">
+      <div className="flex gap-5 p-3 max-w-3xl h-[500px] mx-auto flex-col md:flex-row md:items-center">
         {/* left */}
         <div className="flex-1">
           <Link to="/" className="text-4xl font-bold dark:text-white">
@@ -79,7 +80,7 @@ const SignUp = () => {
             >
               {isPending ? (
                 <>
-                  <LoadingArea size="sm" />
+                  <LoadingArea size="sm" className="h-auto" />
                   <span className="pl-3">Loading...</span>
                 </>
               ) : (

@@ -85,12 +85,12 @@ export const Header = () => {
           {theme === "light" ? (
             <FaMoon
               size={20}
-              className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-amber-500"
+              className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-black"
             />
           ) : (
             <FaSun
               size={20}
-              className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+              className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-amber-500"
             />
           )}
         </Button>
