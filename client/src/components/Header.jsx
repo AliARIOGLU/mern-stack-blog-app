@@ -1,13 +1,13 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
-import { Button, Navbar, TextInput, Dropdown, Avatar } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Button, Navbar, TextInput, Dropdown, Avatar } from "flowbite-react";
 
 import { headerLinks } from "../constants";
-import { useEffect, useState } from "react";
+import { useSignOut } from "../lib/mutations";
 import { useTheme } from "../redux/theme/themeActions";
 import { setTheme } from "../redux/theme/themeActions";
-import { useSignOut } from "../lib/mutations";
 import { useCurrentUser } from "../redux/user/userActions";
 
 export const Header = () => {
@@ -75,14 +75,24 @@ export const Header = () => {
       >
         <AiOutlineSearch onClick={() => navigate("/search")} />
       </Button>
-      <div className="flex gap-2 md:order-2">
+      <div className="flex gap-8 md:order-2 items-center">
         <Button
           onClick={() => setTheme()}
-          className="w-12 h-10 hidden sm:inline"
+          className="w-12 h-10 hidden sm:inline relative focus:ring-0 transition-all duration-300"
           color="gray"
           pill
         >
-          {theme === "light" ? <FaMoon /> : <FaSun />}
+          {theme === "light" ? (
+            <FaMoon
+              size={20}
+              className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-amber-500"
+            />
+          ) : (
+            <FaSun
+              size={20}
+              className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+            />
+          )}
         </Button>
         {currentUser ? (
           <Dropdown
