@@ -83,7 +83,10 @@ const Search = () => {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-7 border-b md:border-b-0 md:border-r md:min-h-screen border-gray-500">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-8 sticky top-[100px]"
+        >
           <div className="flex items-center justify-between gap-2">
             <label
               className="whitespace-nowrap font-semibold"
@@ -148,15 +151,15 @@ const Search = () => {
             searchedPosts.posts.map((post) => (
               <PostCard key={post._id} post={post} />
             ))}
-          {showMore && (
-            <button
-              onClick={handleShowMore}
-              className="text-teal-500 text-lg hover:underline p-7 w-full"
-            >
-              Show More
-            </button>
-          )}
         </div>
+        {showMore && (
+          <button
+            onClick={handleShowMore}
+            className="text-teal-500 text-lg hover:underline p-7 w-full"
+          >
+            Show More
+          </button>
+        )}
       </div>
     </div>
   );
