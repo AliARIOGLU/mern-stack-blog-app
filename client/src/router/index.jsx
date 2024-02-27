@@ -15,6 +15,7 @@ import {
   SignIn,
   SignUp,
   UpdatePost,
+  ErrorPage,
 } from "../pages";
 
 // loaders
@@ -23,7 +24,6 @@ import {
   authPageLoader,
   privatePageLoader,
 } from "./router-actions";
-import ErrorPage from "../pages/ErrorPage";
 
 export const router = createBrowserRouter([
   {

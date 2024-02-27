@@ -130,7 +130,7 @@ export const Header = () => {
             key={link.id}
             as={"div"}
           >
-            <Link className="font-bold" to={link.path}>
+            <Link className="font-bold block" to={link.path}>
               {link.title}
             </Link>
           </Navbar.Link>

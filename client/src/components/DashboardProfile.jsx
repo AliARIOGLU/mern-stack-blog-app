@@ -11,7 +11,7 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
-import { HiCamera } from "react-icons/hi";
+import { BsCameraFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 import { useCurrentUser } from "../redux/user/userActions";
@@ -131,15 +131,15 @@ export const DashboardProfile = () => {
           hidden
         />
         <div
-          className="relative w-32 h-32 self-center cursor-pointer shadow-md rounded-full"
+          className="relative group w-32 h-32 self-center cursor-pointer shadow-md rounded-full"
           onClick={() => filePickerRef.current.click()}
         >
-          <HiCamera className="absolute top-0 right-2 w-10 h-10 text-sky-900 dark:text-blue-500 z-10" />
+          <BsCameraFill className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 text-black z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           {imageFileUploadProgress && (
             <CircularProgressbar
               value={imageFileUploadProgress || 0}
               text={`${imageFileUploadProgress}%`}
-              strokeWidth={5}
+              strokeWidth={4}
               styles={{
                 root: {
                   width: "100%",
