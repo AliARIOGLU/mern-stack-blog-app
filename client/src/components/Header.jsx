@@ -69,11 +69,11 @@ export const Header = () => {
       </form>
       <Button
         className="w-12 h-10 lg:hidden"
-        onClick={() => {}}
+        onClick={() => navigate("/search")}
         color="gray"
         pill
       >
-        <AiOutlineSearch onClick={() => navigate("/search")} />
+        <AiOutlineSearch />
       </Button>
       <div className="flex gap-8 md:order-2 items-center">
         <Button
