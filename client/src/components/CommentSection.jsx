@@ -105,7 +105,7 @@ export const CommentSection = ({ postId }) => {
             onChange={(e) => setComment(e.target.value)}
           />
           <div className="flex justify-between items-center mt-5">
-            {comment.length > 1 && (
+            {comment.length > 0 && (
               <CircularProgressbar
                 value={comment.length / 2}
                 text={
