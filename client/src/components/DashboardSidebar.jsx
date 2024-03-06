@@ -8,7 +8,7 @@ import {
   HiChartPie,
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useSignOut } from "../lib/mutations";
 import { useCurrentUser } from "../redux/user/userActions";
 
@@ -18,10 +18,12 @@ export const DashboardSidebar = () => {
 
   const { currentUser } = useCurrentUser();
 
+  const navigate = useNavigate();
   const signOutMutation = useSignOut();
 
   const handleSignOut = async () => {
     await signOutMutation.mutateAsync();
+    navigate("/");
   };
 
   useEffect(() => {

@@ -100,13 +100,13 @@ export const DashboardProfile = () => {
       return;
     }
 
-    await mutateAsync({ id: currentUser._id, formData });
+    await mutateAsync({ id: currentUser?._id, formData });
   };
 
   const handleDeleteUser = async () => {
     setShowModal(false);
 
-    terminateUserMutation.mutateAsync(currentUser._id);
+    terminateUserMutation.mutateAsync(currentUser?._id);
   };
 
   const handleSignOut = async () => {
@@ -157,7 +157,7 @@ export const DashboardProfile = () => {
             />
           )}
           <img
-            src={imageFileUrl || currentUser.profilePicture}
+            src={imageFileUrl || currentUser?.profilePicture}
             alt="user"
             className={`rounded-full w-full h-full border-8 border-[lightgray] ${
               imageFileUploadProgress &&
@@ -173,14 +173,14 @@ export const DashboardProfile = () => {
           type="text"
           id="username"
           placeholder="John Doe"
-          defaultValue={currentUser.username}
+          defaultValue={currentUser?.username}
           onChange={handleChange}
         />
         <TextInput
           type="email"
           id="email"
           placeholder="johndoe@gmail.com"
-          defaultValue={currentUser.email}
+          defaultValue={currentUser?.email}
           onChange={handleChange}
         />
         <TextInput
