@@ -39,8 +39,20 @@ const SignIn = () => {
   };
 
   useEffect(() => {
-    setErrorReset();
+    let timerId;
 
+    if (error) {
+      timerId = setTimeout(() => {
+        setErrorReset();
+      }, 4000);
+    }
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [error]);
+
+  useEffect(() => {
     return () => setErrorReset();
   }, []);
 
