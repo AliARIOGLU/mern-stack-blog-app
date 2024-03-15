@@ -210,10 +210,16 @@ export const DashboardProfile = () => {
         )}
       </form>
       <div className="flex justify-between text-red-500 mt-5">
-        <span onClick={() => setShowModal(true)} className="cursor-pointer">
+        <span
+          onClick={() => setShowModal(true)}
+          className="cursor-pointer px-2 py-1 hover:bg-red-950 hover:text-white translation-colors duration-200 rounded"
+        >
           Delete Account
         </span>
-        <span onClick={handleSignOut} className="cursor-pointer">
+        <span
+          onClick={handleSignOut}
+          className="cursor-pointer hover:underline"
+        >
           Sign Out
         </span>
       </div>
