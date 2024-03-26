@@ -12,7 +12,7 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { BsCameraFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useCurrentUser } from "../redux/user/userActions";
 import { DeleteModal } from "./DeleteModal";
@@ -30,6 +30,7 @@ export const DashboardProfile = () => {
   const [formData, setFormData] = useState({});
   const [clientUpdateError, setClientUpdateError] = useState(null);
   const filePickerRef = useRef();
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -111,6 +112,7 @@ export const DashboardProfile = () => {
 
   const handleSignOut = async () => {
     await signOutMutation.mutateAsync();
+    navigate("/");
   };
 
   useEffect(() => {
