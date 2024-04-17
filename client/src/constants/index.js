@@ -3,4 +3,5 @@ export const headerLinks = [
   { id: 2, title: "About", path: "/about" },
   { id: 3, title: "Projects", path: "/projects" },
   { id: 4, title: "Profile", path: "/dashboard?tab=profile" },
+  { id: 5, title: "Sign In", path: "/sign-in" },
 ];

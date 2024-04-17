@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import classNames from "classnames";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import { useSignOut } from "../lib/mutations";
 import { useTheme } from "../redux/theme/themeActions";
 import { setTheme } from "../redux/theme/themeActions";
 import { useCurrentUser } from "../redux/user/userActions";
+import { useMobileScreen } from "../hooks/use-mobile-screen";
 
 export const Header = () => {
   const { currentUser } = useCurrentUser();
@@ -17,6 +19,8 @@ export const Header = () => {
   const { theme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const isMobile = useMobileScreen();
 
   const signOutMutation = useSignOut();
 
@@ -115,7 +119,7 @@ export const Header = () => {
             <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
-          <Link to="/sign-in">
+          <Link className="hidden sm:inline" to="/sign-in">
             <Button gradientDuoTone="purpleToBlue" outline>
               Sign In
             </Button>
@@ -129,6 +133,9 @@ export const Header = () => {
             active={location.pathname === link.path}
             key={link.id}
             as={"div"}
+            className={classNames({
+              hidden: link.path === "/sign-in" && !isMobile,
+            })}
           >
             <Link className="font-bold block" to={link.path}>
               {link.title}
